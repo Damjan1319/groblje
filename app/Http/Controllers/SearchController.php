@@ -19,9 +19,32 @@ class SearchController extends Controller
     {
         $query = GrobnoMesto::with(['preminuli', 'uplate', 'uplatilac']);
 
-        // Filter po šifri
+        // Filter po imenu ili prezimenu preminulog ili uplatioca
+        if (request('ime_prezime')) {
+            $imePrezime = request('ime_prezime');
+            $query->whereHas('preminuli', function($q) use ($imePrezime) {
+                $q->where('ime_prezime', 'like', "%$imePrezime%") ;
+            })
+            ->orWhereHas('uplatilac', function($q) use ($imePrezime) {
+                $q->where('ime_prezime', 'like', "%$imePrezime%")
+                  ->orWhere('adresa', 'like', "%$imePrezime%") ;
+            });
+        }
+
+        // Filter po nazivu (šifri) grobnog mesta
         if (request('sifra')) {
             $query->where('sifra', 'like', '%' . request('sifra') . '%');
+        }
+
+        // Filter po statusu uplate
+        if (request('status') === 'uplaceno') {
+            $query->whereHas('uplate', function($q) {
+                $q->where('uplaceno', true);
+            });
+        } elseif (request('status') === 'neuplaceno') {
+            $query->whereDoesntHave('uplate', function($q) {
+                $q->where('uplaceno', true);
+            });
         }
 
         // Filter po oznaci

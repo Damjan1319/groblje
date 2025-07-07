@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GrobnoMesto;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class GrobnoMestoController extends Controller
 {
@@ -113,5 +114,15 @@ class GrobnoMestoController extends Controller
         $grobnoMesto->delete();
 
         return redirect()->route('grobno-mesto.index')->with('success', 'Grobno mesto je uspešno obrisano.');
+    }
+
+    /**
+     * Generate PDF report for the specified resource.
+     */
+    public function pdf(string $id)
+    {
+        $grobnoMesto = GrobnoMesto::with(['preminuli', 'uplate', 'uplatilac'])->findOrFail($id);
+        $pdf = Pdf::loadView('grobno-mesto.pdf', compact('grobnoMesto'));
+        return $pdf->download('grobno-mesto-'.$grobnoMesto->sifra.'.pdf');
     }
 }

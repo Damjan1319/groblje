@@ -29,4 +29,14 @@ class Preminuli extends Model
     {
         return $this->hasMany(Uplata::class);
     }
+
+    // Ako nema ime_prezime, koristi ime i prezime ako postoje
+    public function getImePrezimeAttribute($value)
+    {
+        if ($value) return $value;
+        if (isset($this->attributes['ime']) && isset($this->attributes['prezime'])) {
+            return $this->attributes['ime'] . ' ' . $this->attributes['prezime'];
+        }
+        return $this->attributes['ime'] ?? $this->attributes['prezime'] ?? '';
+    }
 }

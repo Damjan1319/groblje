@@ -65,6 +65,7 @@
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Plaćeno</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Period</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Datum uplate</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Napomena</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Akcije</th>
                                     </tr>
                                 </thead>
@@ -86,6 +87,7 @@
                                             </td>
                                             <td class="px-4 py-2">{{ $uplata->period }}</td>
                                             <td class="px-4 py-2">{{ $uplata->datum_uplate ? $uplata->datum_uplate->format('d.m.Y') : '-' }}</td>
+                                            <td class="px-4 py-2">{{ $uplata->napomena ?? '-' }}</td>
                                             <td class="px-4 py-2 whitespace-nowrap text-sm font-medium">
                                                 <div class="flex space-x-2">
                                                     <a href="{{ route('uplata.show', $uplata) }}" 

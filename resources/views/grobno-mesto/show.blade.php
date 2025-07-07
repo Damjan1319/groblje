@@ -9,6 +9,10 @@
                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     ← Nazad
                 </a>
+                <a href="{{ route('grobno-mesto.pdf', $grobnoMesto->id) }}" target="_blank"
+                   class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
+                    📄 Kreiraj PDF izveštaj
+                </a>
                 @auth
                     @if(auth()->user()->canEdit())
                         <a href="{{ route('grobno-mesto.edit', $grobnoMesto) }}" 
@@ -65,6 +69,14 @@
                                                 {{ $preminuli->datum_rodjenja ? $preminuli->datum_rodjenja->format('d.m.Y') : 'N/A' }} - 
                                                 {{ $preminuli->datum_smrti ? $preminuli->datum_smrti->format('d.m.Y') : 'N/A' }}
                                             </div>
+                                            @php
+                                                $uplataZaKoga = $grobnoMesto->uplate->where('za_koga', $preminuli->ime_prezime)->sortByDesc('datum_uplate')->first();
+                                            @endphp
+                                            @if($uplataZaKoga)
+                                                <div class="text-xs text-gray-500 mt-1">
+                                                    <span class="font-medium">Za koga (iz uplate):</span> {{ $uplataZaKoga->za_koga }}
+                                                </div>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>

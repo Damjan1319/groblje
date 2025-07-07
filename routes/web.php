@@ -23,6 +23,7 @@ Route::post('/search', [SearchController::class, 'search'])->name('search.search
 
 // Rute za grobna mesta
 Route::resource('grobno-mesto', GrobnoMestoController::class)->middleware('auth');
+Route::get('/grobno-mesto/{id}/pdf', [\App\Http\Controllers\GrobnoMestoController::class, 'pdf'])->name('grobno-mesto.pdf');
 
 // Rute za uplatioce
 Route::resource('uplatilac', UplatilacController::class)->middleware('auth');

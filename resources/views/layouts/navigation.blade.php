@@ -17,7 +17,7 @@
                     </x-nav-link>
                     
                     @auth
-                        @if(auth()->user()->canEdit())
+                        @if(auth()->user()->canAdd())
                             <x-nav-link :href="route('grobno-mesto.index')" :active="request()->routeIs('grobno-mesto.*')">
                                 Grobna mesta
                             </x-nav-link>
@@ -97,7 +97,7 @@
             </x-responsive-nav-link>
             
             @auth
-                @if(auth()->user()->canEdit())
+                @if(auth()->user()->canAdd())
                     <x-responsive-nav-link :href="route('grobno-mesto.index')" :active="request()->routeIs('grobno-mesto.*')">
                         Grobna mesta
                     </x-responsive-nav-link>

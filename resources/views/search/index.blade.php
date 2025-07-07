@@ -49,16 +49,20 @@
             <!-- Filter forma -->
             <form method="GET" action="{{ route('search.index') }}" class="mb-6 bg-white p-4 rounded shadow flex flex-col md:flex-row md:items-end gap-4">
                 <div class="flex-1">
-                    <x-input-label for="sifra" value="Šifra grobnog mesta" />
-                    <x-text-input id="sifra" name="sifra" type="text" class="mt-1 block w-full" value="{{ request('sifra') }}" placeholder="Unesi šifru..." />
+                    <x-input-label for="ime_prezime" value="Ime ili prezime (preminulog ili uplatioca)" />
+                    <x-text-input id="ime_prezime" name="ime_prezime" type="text" class="mt-1 block w-full" value="{{ request('ime_prezime') }}" placeholder="Unesi ime ili prezime..." />
                 </div>
                 <div class="flex-1">
-                    <x-input-label for="oznaka" value="Oznaka" />
-                    <x-text-input id="oznaka" name="oznaka" type="text" class="mt-1 block w-full" value="{{ request('oznaka') }}" placeholder="Unesi oznaku..." />
+                    <x-input-label for="sifra" value="Naziv grobnog mesta" />
+                    <x-text-input id="sifra" name="sifra" type="text" class="mt-1 block w-full" value="{{ request('sifra') }}" placeholder="Unesi naziv..." />
                 </div>
                 <div class="flex-1">
-                    <x-input-label for="lokacija" value="Lokacija" />
-                    <x-text-input id="lokacija" name="lokacija" type="text" class="mt-1 block w-full" value="{{ request('lokacija') }}" placeholder="Unesi lokaciju..." />
+                    <x-input-label for="status" value="Status uplate" />
+                    <select id="status" name="status" class="mt-1 block w-full rounded border-gray-300">
+                        <option value="">Svi</option>
+                        <option value="uplaceno" {{ request('status') == 'uplaceno' ? 'selected' : '' }}>Uplaćeni</option>
+                        <option value="neuplaceno" {{ request('status') == 'neuplaceno' ? 'selected' : '' }}>Neuplaćeni</option>
+                    </select>
                 </div>
                 <div>
                     <x-primary-button class="w-full md:w-auto">Pretraži</x-primary-button>
