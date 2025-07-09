@@ -119,11 +119,39 @@
                         <div class="mt-4">
                             {{ $uplate->links() }}
                         </div>
-                    @else
+                    @endif
+
+                    @if(($status === null || $status === '' || $status === 'neuplaceno') && isset($uplatilaciBezUplata) && $uplatilaciBezUplata->count() > 0)
+                        <div class="mt-8">
+                            <h3 class="text-lg font-bold mb-2">Uplatioci bez nijedne uplate</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ime i prezime</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Adresa</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Telefon</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach($uplatilaciBezUplata as $uplatilac)
+                                            <tr>
+                                                <td class="px-4 py-2">{{ $uplatilac->ime_prezime }}</td>
+                                                <td class="px-4 py-2">{{ $uplatilac->adresa }}</td>
+                                                <td class="px-4 py-2">{{ $uplatilac->telefon }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($uplate->count() === 0 && (!isset($uplatilaciBezUplata) || $uplatilaciBezUplata->count() === 0))
                         <div class="text-center py-12">
                             <div class="text-4xl mb-4 text-gray-400">Uplate</div>
                             <h3 class="text-2xl font-bold text-gray-700 mb-2">Nema uplata</h3>
-                            <p class="text-gray-500 mb-6">Još uvek nije kreirana nijedna uplata.</p>
+                            <p class="text-gray-500 mb-6">Još uvek nije kreirana nijedna uplata niti postoji uplatioc bez uplata.</p>
                             @auth
                                 @if(auth()->user()->canAdd())
                                     <a href="{{ route('uplata.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

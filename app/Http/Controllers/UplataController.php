@@ -32,12 +32,11 @@ class UplataController extends Controller
                 $q->where('sifra', 'like', '%' . $request->sifra_grobnog_mesta . '%');
             });
         }
-        if ($request->filled('status')) {
-            if ($request->status === 'uplaceno') {
-                $query->where('uplaceno', true);
-            } elseif ($request->status === 'neuplaceno') {
-                $query->where('uplaceno', false);
-            }
+        $status = $request->input('status');
+        if ($status === 'uplaceno') {
+            $query->where('uplaceno', true);
+        } elseif ($status === 'neuplaceno') {
+            $query->where('uplaceno', false);
         }
 
         $uplate = $query->orderByDesc('datum_uplate')->paginate(15)->withQueryString();
@@ -47,7 +46,15 @@ class UplataController extends Controller
             'uplaceno' => Uplata::where('uplaceno', true)->count(),
             'neuplaceno' => Uplata::where('uplaceno', false)->count(),
         ];
-        return view('uplata.index', compact('uplate', 'statistika'));
+
+        // Prikaz uplatilaca bez uplata za filtere 'svi' i 'neuplaceno'
+        $uplatilaciBezUplata = collect();
+        if ($status === null || $status === '' || $status === 'neuplaceno') {
+            $uplatilaciBezUplata = Uplatilac::doesntHave('uplate')->orderBy('ime_prezime')->get();
+        }
+        // Za 'uplaceno' filter ne prikazujemo uplatilace bez uplata
+
+        return view('uplata.index', compact('uplate', 'statistika', 'uplatilaciBezUplata', 'status'));
     }
 
     /**

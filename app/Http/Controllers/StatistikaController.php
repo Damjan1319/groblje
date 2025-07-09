@@ -18,7 +18,7 @@ class StatistikaController extends Controller
             'neuplaceno' => Uplata::where('uplaceno', false)->count(),
             'ukupno_grobnih_mesta' => GrobnoMesto::count(),
             'ukupno_uplatilaca' => Uplatilac::count(),
-            'ukupno_preminulih' => Preminuli::count(),
+            'ukupno_preminulih' => Uplatilac::whereNotNull('imePreminulog')->whereNotNull('prezimePreminulog')->count(),
         ];
         return view('statistika.index', compact('statistika'));
     }

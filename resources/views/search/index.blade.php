@@ -111,23 +111,30 @@
                                             </div>
                                         </td>
                                         <td class="px-4 py-4">
-                                            @if($grobnoMesto->uplatilac)
+                                            @if($grobnoMesto->uplatilacs->count())
                                                 <div>
-                                                    <div class="text-sm font-medium text-gray-900">{{ $grobnoMesto->uplatilac->ime_prezime }}</div>
-                                                    <div class="text-xs text-gray-500">{{ $grobnoMesto->uplatilac->adresa }}</div>
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        @foreach($grobnoMesto->uplatilacs as $u)
+                                                            {{ $u->ime_prezime }}@if(!$loop->last), @endif
+                                                        @endforeach
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">
+                                                        @foreach($grobnoMesto->uplatilacs as $u)
+                                                            {{ $u->adresa }}@if(!$loop->last), @endif
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             @else
                                                 <span class="text-gray-400 text-sm">Nije dodeljen</span>
                                             @endif
                                         </td>
                                         <td class="px-4 py-4">
-                                            @if($grobnoMesto->preminuli->count() > 0)
-                                                @foreach($grobnoMesto->preminuli->take(2) as $preminuli)
-                                                    <div class="text-sm text-gray-900">{{ $preminuli->ime_prezime }}</div>
-                                                @endforeach
-                                                @if($grobnoMesto->preminuli->count() > 2)
-                                                    <div class="text-xs text-gray-500">+{{ $grobnoMesto->preminuli->count() - 2 }} više</div>
-                                                @endif
+                                            @if($grobnoMesto->uplatilacs->count())
+                                                <div class="text-sm text-gray-900">
+                                                    @foreach($grobnoMesto->uplatilacs as $u)
+                                                        {{ $u->imePreminulog }} {{ $u->prezimePreminulog }}@if(!$loop->last), @endif
+                                                    @endforeach
+                                                </div>
                                             @else
                                                 <span class="text-gray-400 text-sm">-</span>
                                             @endif

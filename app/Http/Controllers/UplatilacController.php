@@ -29,7 +29,8 @@ class UplatilacController extends Controller
         if (!auth()->user()->canAdd()) {
             return redirect()->back()->with('error', 'Nemate dozvolu za kreiranje uplatioca.');
         }
-        return view('uplatilac.create');
+        $grobnaMesta = \App\Models\GrobnoMesto::all();
+        return view('uplatilac.create', compact('grobnaMesta'));
     }
 
     /**
@@ -47,9 +48,14 @@ class UplatilacController extends Controller
             'telefon' => 'nullable|string|max:255',
             'imePreminulog' => 'nullable|string|max:255',
             'prezimePreminulog' => 'nullable|string|max:255',
+            'grobna_mesta' => 'nullable|array',
+            'grobna_mesta.*' => 'exists:grobno_mestos,id',
         ]);
 
-        Uplatilac::create($request->all());
+        $uplatilac = Uplatilac::create($request->only(['ime_prezime','adresa','telefon','imePreminulog','prezimePreminulog']));
+        if ($request->filled('grobna_mesta')) {
+            $uplatilac->grobnaMesta()->sync($request->grobna_mesta);
+        }
 
         return redirect()->route('uplatilac.index')->with('success', 'Uplatilac je uspešno kreiran.');
     }
@@ -73,7 +79,8 @@ class UplatilacController extends Controller
         }
 
         $uplatilac = Uplatilac::findOrFail($id);
-        return view('uplatilac.edit', compact('uplatilac'));
+        $grobnaMesta = \App\Models\GrobnoMesto::all();
+        return view('uplatilac.edit', compact('uplatilac', 'grobnaMesta'));
     }
 
     /**
@@ -86,17 +93,17 @@ class UplatilacController extends Controller
         }
 
         $uplatilac = Uplatilac::findOrFail($id);
-
         $request->validate([
             'ime_prezime' => 'required|string|max:255',
             'adresa' => 'required|string|max:255',
             'telefon' => 'nullable|string|max:255',
             'imePreminulog' => 'nullable|string|max:255',
             'prezimePreminulog' => 'nullable|string|max:255',
+            'grobna_mesta' => 'nullable|array',
+            'grobna_mesta.*' => 'exists:grobno_mestos,id',
         ]);
-
-        $uplatilac->update($request->all());
-
+        $uplatilac->update($request->only(['ime_prezime','adresa','telefon','imePreminulog','prezimePreminulog']));
+        $uplatilac->grobnaMesta()->sync($request->grobna_mesta ?? []);
         return redirect()->route('uplatilac.index')->with('success', 'Uplatilac je uspešno ažuriran.');
     }
 

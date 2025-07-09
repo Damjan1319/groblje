@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
                     <x-nav-link :href="route('search.index')" :active="request()->routeIs('search.*')">
                         Početna
                     </x-nav-link>
@@ -27,9 +27,22 @@
                             <x-nav-link :href="route('uplata.index')" :active="request()->routeIs('uplata.*')">
                                 Uplate
                             </x-nav-link>
-                            <x-nav-link :href="route('statistika.index')" :active="request()->routeIs('statistika.*')">
-                                Statistika
-                            </x-nav-link>
+                            <div x-data="{ open: false }" class="relative flex items-center h-full">
+                                <button @click="open = !open" @keydown.escape="open = false"
+                                    class="inline-flex items-center h-full text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition px-2 bg-transparent border-none shadow-none"
+                                    style="background: none; border: none; box-shadow: none;">
+                                    Statistika
+                                    <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" @click.away="open = false"
+                                    class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                                    x-transition>
+                                    <a href="{{ route('statistika.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Statistika</a>
+                                    <a href="{{ route('statistika.napredna') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Napredna statistika</a>
+                                </div>
+                            </div>
                         @endif
                     @endauth
                 </div>
@@ -107,9 +120,14 @@
                     <x-responsive-nav-link :href="route('uplata.index')" :active="request()->routeIs('uplata.*')">
                         Uplate
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('statistika.index')" :active="request()->routeIs('statistika.*')">
-                        Statistika
-                    </x-responsive-nav-link>
+                    <div class="pl-4">
+                        <x-responsive-nav-link :href="route('statistika.index')" :active="request()->routeIs('statistika.index')">
+                            Statistika
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('statistika.napredna')" :active="request()->routeIs('statistika.napredna')">
+                            Napredna statistika
+                        </x-responsive-nav-link>
+                    </div>
                 @endif
             @endauth
         </div>

@@ -58,7 +58,15 @@
                                                 <div class="text-sm text-gray-900">{{ $grobnoMesto->lokacija ?? '-' }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">{{ $grobnoMesto->uplatilac->ime_prezime ?? 'Nije dodeljen' }}</div>
+                                                <div class="text-sm text-gray-900">
+                                                    @if($grobnoMesto->uplatilacs->count())
+                                                        @foreach($grobnoMesto->uplatilacs as $u)
+                                                            {{ $u->ime_prezime }}@if(!$loop->last), @endif
+                                                        @endforeach
+                                                    @else
+                                                        Nije dodeljen
+                                                    @endif
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">{{ $grobnoMesto->preminuli->count() }}</span>

@@ -49,6 +49,16 @@
                             </div>
                         </div>
 
+                        <div class="mt-6">
+                            <x-input-label for="grobna_mesta" value="Grobna mesta (možete izabrati više)" />
+                            <select id="grobna_mesta" name="grobna_mesta[]" class="mt-1 block w-full" multiple>
+                                @foreach($grobnaMesta as $gm)
+                                    <option value="{{ $gm->id }}">{{ $gm->sifra }} - {{ $gm->oznaka }} ({{ $gm->lokacija }})</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('grobna_mesta')" class="mt-2" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-6 space-x-4">
                             <a href="{{ route('uplatilac.index') }}" 
                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">

@@ -17,7 +17,7 @@ class SearchController extends Controller
 
     public function index()
     {
-        $query = GrobnoMesto::with(['preminuli', 'uplate', 'uplatilac']);
+        $query = GrobnoMesto::with(['preminuli', 'uplate', 'uplatilacs']);
 
         // Filter po imenu ili prezimenu preminulog ili uplatioca
         if (request('ime_prezime')) {
@@ -25,7 +25,7 @@ class SearchController extends Controller
             $query->whereHas('preminuli', function($q) use ($imePrezime) {
                 $q->where('ime_prezime', 'like', "%$imePrezime%") ;
             })
-            ->orWhereHas('uplatilac', function($q) use ($imePrezime) {
+            ->orWhereHas('uplatilacs', function($q) use ($imePrezime) {
                 $q->where('ime_prezime', 'like', "%$imePrezime%")
                   ->orWhere('adresa', 'like', "%$imePrezime%") ;
             });

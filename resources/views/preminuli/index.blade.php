@@ -18,23 +18,21 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ime</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Prezime</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Datum rođenja</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Datum smrti</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Grobno mesto</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Ime i prezime preminulog</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($preminuli as $p)
+                                    @forelse($preminuli as $uplatilac)
                                         <tr>
-                                            <td class="px-4 py-2">{{ $p->ime }}</td>
-                                            <td class="px-4 py-2">{{ $p->prezime }}</td>
-                                            <td class="px-4 py-2">{{ $p->datum_rodjenja ? $p->datum_rodjenja->format('d.m.Y') : '-' }}</td>
-                                            <td class="px-4 py-2">{{ $p->datum_smrti ? $p->datum_smrti->format('d.m.Y') : '-' }}</td>
-                                            <td class="px-4 py-2">{{ $p->grobnoMesto->sifra ?? '-' }}</td>
+                                            <td class="px-4 py-2">
+                                                {{ $uplatilac->imePreminulog }} {{ $uplatilac->prezimePreminulog }}
+                                            </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td class="px-4 py-2 text-center text-gray-400" colspan="1">Nema preminulih.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class GrobnoMesto extends Model
 {
@@ -12,7 +13,6 @@ class GrobnoMesto extends Model
         'sifra',
         'oznaka',
         'lokacija',
-        'uplatilac_id',
         'napomena',
     ];
 
@@ -26,8 +26,8 @@ class GrobnoMesto extends Model
         return $this->hasMany(Uplata::class);
     }
 
-    public function uplatilac(): BelongsTo
+    public function uplatilacs(): BelongsToMany
     {
-        return $this->belongsTo(\App\Models\Uplatilac::class);
+        return $this->belongsToMany(\App\Models\Uplatilac::class, 'grobno_mesto_uplatilac');
     }
 }

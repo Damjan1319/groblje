@@ -34,5 +34,10 @@ class Uplata extends Model
         return $this->belongsTo(Uplatilac::class);
     }
 
+    public function preminuli(): BelongsTo
+    {
+        return $this->belongsTo(Preminuli::class);
+    }
+
     // Uklanjamo relaciju sa preminuli jer sada koristimo tekstualno polje 'za_koga'
 }

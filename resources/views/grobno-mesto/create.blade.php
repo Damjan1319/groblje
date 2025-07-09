@@ -44,22 +44,6 @@
                         </div>
                         
                         <div class="mt-6">
-                            <label for="uplatilac_id" class="block text-sm font-medium text-gray-700 mb-2">Uplatilac (opciono)</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('uplatilac_id') border-red-500 @enderror" 
-                                    id="uplatilac_id" name="uplatilac_id">
-                                <option value="">Izaberite uplatioca (opciono)</option>
-                                @foreach($uplatilaci as $uplatilac)
-                                    <option value="{{ $uplatilac->id }}" {{ old('uplatilac_id') == $uplatilac->id ? 'selected' : '' }}>
-                                        {{ $uplatilac->ime_prezime }} - {{ $uplatilac->adresa }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('uplatilac_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        
-                        <div class="mt-6">
                             <label for="napomena" class="block text-sm font-medium text-gray-700 mb-2">Napomena</label>
                             <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('napomena') border-red-500 @enderror" 
                                       id="napomena" name="napomena" rows="3" 

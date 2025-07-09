@@ -18,7 +18,7 @@ class PreminuliController extends Controller
      */
     public function index()
     {
-        $preminuli = Preminuli::with(['grobnoMesto', 'uplate'])->paginate(15);
+        $preminuli = \App\Models\Uplatilac::whereNotNull('imePreminulog')->whereNotNull('prezimePreminulog')->paginate(15);
         return view('preminuli.index', compact('preminuli'));
     }
 

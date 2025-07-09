@@ -49,6 +49,10 @@
                                 <td class="font-bold pr-4 py-2">Napomena:</td>
                                 <td>{{ $uplata->napomena ?? '-' }}</td>
                             </tr>
+                            <tr>
+                                <td class="font-bold pr-4 py-2">Preminuli:</td>
+                                <td>{{ $uplata->preminuli->ime_prezime ?? '-' }}</td>
+                            </tr>
                         </tbody>
                     </table>
                     <a href="{{ route('uplata.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Nazad</a>

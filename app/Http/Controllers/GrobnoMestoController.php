@@ -121,7 +121,7 @@ class GrobnoMestoController extends Controller
      */
     public function pdf(string $id)
     {
-        $grobnoMesto = GrobnoMesto::with(['preminuli', 'uplate', 'uplatilac'])->findOrFail($id);
+        $grobnoMesto = GrobnoMesto::with(['preminuli', 'uplate', 'uplatilacs'])->findOrFail($id);
         $pdf = Pdf::loadView('grobno-mesto.pdf', compact('grobnoMesto'));
         return $pdf->download('grobno-mesto-'.$grobnoMesto->sifra.'.pdf');
     }

@@ -22,6 +22,6 @@ class Uplatilac extends Model
 
     public function grobnaMesta()
     {
-        return $this->hasMany(\App\Models\GrobnoMesto::class);
+        return $this->belongsToMany(\App\Models\GrobnoMesto::class, 'grobno_mesto_uplatilac');
     }
 }

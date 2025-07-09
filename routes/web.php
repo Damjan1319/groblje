@@ -7,6 +7,7 @@ use App\Http\Controllers\PreminuliController;
 use App\Http\Controllers\UplataController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatistikaController;
+use App\Http\Controllers\StatistikaAdvancedController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,5 +44,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/statistika', [StatistikaController::class, 'index'])->middleware('auth')->name('statistika.index');
+Route::get('/statistika/napredna', [\App\Http\Controllers\StatistikaAdvancedController::class, 'index'])->middleware('auth')->name('statistika.napredna');
 
 require __DIR__.'/auth.php';

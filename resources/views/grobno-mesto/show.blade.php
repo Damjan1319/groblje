@@ -47,7 +47,15 @@
                                 </div>
                                 <div>
                                     <span class="font-medium text-gray-700">Uplatilac:</span>
-                                    <span class="ml-2 text-gray-900">{{ $grobnoMesto->uplatilac->ime_prezime ?? 'Nije dodeljen' }}</span>
+                                    <span class="ml-2 text-gray-900">
+                                        @if($grobnoMesto->uplatilacs->count())
+                                            @foreach($grobnoMesto->uplatilacs as $u)
+                                                {{ $u->ime_prezime }}@if(!$loop->last), @endif
+                                            @endforeach
+                                        @else
+                                            Nije dodeljen
+                                        @endif
+                                    </span>
                                 </div>
                                 <div>
                                     <span class="font-medium text-gray-700">Napomena:</span>
@@ -58,7 +66,13 @@
 
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">👥 Preminuli</h3>
-                            @if($grobnoMesto->preminuli->count() > 0)
+                            @if($grobnoMesto->uplatilacs->count() && $grobnoMesto->uplatilacs->first()->imePreminulog)
+                                <div class="mb-2 p-2 bg-gray-50 rounded border border-gray-200">
+                                    @foreach($grobnoMesto->uplatilacs as $u)
+                                        <span class="ml-2 text-gray-900">{{ $u->imePreminulog }} {{ $u->prezimePreminulog }}</span>@if(!$loop->last), @endif
+                                    @endforeach
+                                </div>
+                            @elseif($grobnoMesto->preminuli->count() > 0)
                                 <div class="space-y-2">
                                     @foreach($grobnoMesto->preminuli as $preminuli)
                                         <div class="border border-gray-200 rounded p-3">
