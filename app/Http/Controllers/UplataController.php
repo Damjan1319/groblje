@@ -95,6 +95,21 @@ class UplataController extends Controller
         if (empty($uplataData['datum_uplate'])) {
             $uplataData['datum_uplate'] = now()->format('Y-m-d'); // Automatski postavi današnji datum ako nije unet
         }
+        
+        // Automatski poveži uplatioca sa grobnim mestom ako već nije povezan
+        $uplatilac = Uplatilac::find($request->uplatilac_id);
+        $grobnoMesto = GrobnoMesto::find($request->grobno_mesto_id);
+        
+        if ($uplatilac && $grobnoMesto) {
+            // Proveri da li već postoji veza
+            $existingRelation = $uplatilac->grobnaMesta()->where('grobno_mesto_id', $grobnoMesto->id)->exists();
+            
+            if (!$existingRelation) {
+                // Automatski dodaj vezu
+                $uplatilac->grobnaMesta()->attach($grobnoMesto->id);
+            }
+        }
+        
         Uplata::create($uplataData);
 
         return redirect()->route('uplata.index')->with('success', 'Uplata je uspešno kreirana.');
@@ -147,6 +162,20 @@ class UplataController extends Controller
         ]);
 
         $uplata->update($request->all());
+        
+        // Automatski poveži uplatioca sa grobnim mestom ako se promenili
+        $uplatilac = Uplatilac::find($request->uplatilac_id);
+        $grobnoMesto = GrobnoMesto::find($request->grobno_mesto_id);
+        
+        if ($uplatilac && $grobnoMesto) {
+            // Proveri da li već postoji veza
+            $existingRelation = $uplatilac->grobnaMesta()->where('grobno_mesto_id', $grobnoMesto->id)->exists();
+            
+            if (!$existingRelation) {
+                // Automatski dodaj vezu
+                $uplatilac->grobnaMesta()->attach($grobnoMesto->id);
+            }
+        }
 
         return redirect()->route('uplata.index')->with('success', 'Uplata je uspešno ažurirana.');
     }
@@ -206,6 +235,21 @@ class UplataController extends Controller
         if (empty($uplataData['datum_uplate'])) {
             $uplataData['datum_uplate'] = now()->format('Y-m-d'); // Automatski postavi današnji datum ako nije unet
         }
+        
+        // Automatski poveži uplatioca sa grobnim mestom ako već nije povezan
+        $uplatilac = Uplatilac::find($request->uplatilac_id);
+        $grobnoMesto = GrobnoMesto::find($grobnoMestoId);
+        
+        if ($uplatilac && $grobnoMesto) {
+            // Proveri da li već postoji veza
+            $existingRelation = $uplatilac->grobnaMesta()->where('grobno_mesto_id', $grobnoMesto->id)->exists();
+            
+            if (!$existingRelation) {
+                // Automatski dodaj vezu
+                $uplatilac->grobnaMesta()->attach($grobnoMesto->id);
+            }
+        }
+        
         Uplata::create($uplataData);
 
         return redirect()->route('grobno-mesto.show', $grobnoMestoId)->with('success', 'Uplata je uspešno kreirana.');

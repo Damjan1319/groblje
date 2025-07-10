@@ -15,10 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // Pozivamo UserSeeder
+        // Pozivamo sve seedere u pravom redosledu
         $this->call([
             UserSeeder::class,
-            GrobnoMestoSeeder::class,
+            GrobnoMestoReplaceSeeder::class,
+            UplatilacReplaceSeeder::class,
+            UplatilacGrobnoMestoPivotSeeder::class,
+            UplataReplaceSeeder::class,
         ]);
     }
 }

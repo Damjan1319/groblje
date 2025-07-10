@@ -43,6 +43,9 @@
 
     <div class="mb-8 bg-white p-6 rounded shadow print-p-4 print-mb-4">
         <h3 class="text-xl font-semibold mb-4 print-mb-2">Pregled po izabranim periodima</h3>
+        @if(count($statistika) === 0)
+            <div class="text-center text-gray-400 py-8">Nema podataka za izabrane filtere.</div>
+        @else
         <table class="min-w-full divide-y divide-gray-200 mb-4 print-gap">
             <thead class="bg-gray-50">
                 <tr>
@@ -52,17 +55,13 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($statistika as $s)
+                @foreach($statistika as $s)
                     <tr>
                         <td class="px-4 py-2 font-semibold">{{ $meseci[$s['mesec']] ?? '' }} {{ $s['godina'] }}</td>
                         <td class="px-4 py-2">{{ $s['broj'] }}</td>
                         <td class="px-4 py-2">{{ number_format($s['suma'], 2) }}</td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="px-4 py-2 text-center text-gray-400">Nema podataka za izabrani period.</td>
-                    </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
         <div class="flex flex-col gap-y-2 mt-4 print-gap">
@@ -75,6 +74,7 @@
                 <div class="text-2xl font-bold text-green-700">{{ number_format(array_sum(array_column($statistika, 'suma')), 2) }} RSD</div>
             </div>
         </div>
+        @endif
     </div>
 
     <div class="bg-white p-6 rounded shadow print-p-4 print-mb-4">
@@ -84,28 +84,31 @@
 
     @php
         $komentar = '';
-        $periodiTekst = collect($statistika)->map(function($s) use ($meseci) {
-            return trim(($meseci[$s['mesec']] ?? '') . ' ' . $s['godina']);
-        })->implode(', ');
+        $periodiTekst = '';
         if (count($statistika) === 0) {
             $komentar = 'Nema podataka za izabrane filtere.';
-        } elseif (count($statistika) === 1) {
-            $s = $statistika[0];
-            $naziv = ($meseci[$s['mesec']] ?? '') . ' ' . $s['godina'];
-            $komentar = "Za period $naziv ima ukupno {$s['broj']} uplata u iznosu od " . number_format($s['suma'], 2) . " RSD.";
         } else {
-            $najvise = collect($statistika)->sortByDesc('broj')->first();
-            $najmanje = collect($statistika)->sortBy('broj')->first();
-            $ukupno = array_sum(array_column($statistika, 'broj'));
-            $ukupnoIznos = array_sum(array_column($statistika, 'suma'));
-            $prosek = round($ukupno / count($statistika), 2);
-            $prosekIznos = round($ukupnoIznos / count($statistika), 2);
-            $komentar = "Za izabrane periode: $periodiTekst. Ukupno uplata: $ukupno, ukupno iznos: " . number_format($ukupnoIznos, 2) . " RSD. Prosečno po periodu: $prosek uplata, " . number_format($prosekIznos, 2) . " RSD. ";
-            $komentar .= "Najviše uplata ima u periodu " . ($meseci[$najvise['mesec']] ?? '') . " {$najvise['godina']} ({$najvise['broj']} uplata), a najmanje u periodu " . ($meseci[$najmanje['mesec']] ?? '') . " {$najmanje['godina']} ({$najmanje['broj']} uplata).";
+            $periodiTekst = collect($statistika)->map(function($s) use ($meseci) {
+                return trim(($meseci[$s['mesec']] ?? '') . ' ' . $s['godina']);
+            })->implode(', ');
+            if (count($statistika) === 1) {
+                $s = reset($statistika);
+                $naziv = ($meseci[$s['mesec']] ?? '') . ' ' . $s['godina'];
+                $komentar = "Za period $naziv ima ukupno {$s['broj']} uplata u iznosu od " . number_format($s['suma'], 2) . " RSD.";
+            } else {
+                $najvise = collect($statistika)->sortByDesc('broj')->first();
+                $najmanje = collect($statistika)->sortBy('broj')->first();
+                $ukupno = array_sum(array_column($statistika, 'broj'));
+                $ukupnoIznos = array_sum(array_column($statistika, 'suma'));
+                $prosek = round($ukupno / count($statistika), 2);
+                $prosekIznos = round($ukupnoIznos / count($statistika), 2);
+                $komentar = "Za izabrane periode: $periodiTekst. Ukupno uplata: $ukupno, ukupno iznos: " . number_format($ukupnoIznos, 2) . " RSD. Prosečno po periodu: $prosek uplata, " . number_format($prosekIznos, 2) . " RSD. ";
+                $komentar .= "Najviše uplata ima u periodu " . ($meseci[$najvise['mesec']] ?? '') . " {$najvise['godina']} ({$najvise['broj']} uplata), a najmanje u periodu " . ($meseci[$najmanje['mesec']] ?? '') . " {$najmanje['godina']} ({$najmanje['broj']} uplata).";
+            }
         }
     @endphp
     <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-800 rounded print-p-2 print-mb-2">
-        <strong>Analiza:</strong> {{ $komentar }}
+        <strong>Analiza:</strong> {{ $komentar ?? 'Nema podataka za izabrane filtere.' }}
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

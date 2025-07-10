@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Uplatilac extends Model
 {
     protected $fillable = [
+        'sifra',
+        'ime',
+        'prezime',
         'ime_prezime',
         'adresa',
         'telefon',

@@ -8,6 +8,7 @@ use App\Http\Controllers\UplataController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatistikaController;
 use App\Http\Controllers\StatistikaAdvancedController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,5 +46,11 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/statistika', [StatistikaController::class, 'index'])->middleware('auth')->name('statistika.index');
 Route::get('/statistika/napredna', [\App\Http\Controllers\StatistikaAdvancedController::class, 'index'])->middleware('auth')->name('statistika.napredna');
+
+// Admin rute
+Route::get('/admin/import', function () {
+    return view('admin.import');
+})->middleware('auth')->name('admin.import');
+Route::post('/admin/import-data', [AdminController::class, 'importData'])->middleware('auth')->name('admin.import-data');
 
 require __DIR__.'/auth.php';
